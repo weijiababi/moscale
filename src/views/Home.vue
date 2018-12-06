@@ -54,7 +54,7 @@ export default {
     })
   },
   created() {
-    console.log('配置文件中的全局数据')
+    console.log('配置文件的全局数据')
     console.log(this.$global)
     this.getUser()
   },
