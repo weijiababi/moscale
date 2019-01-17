@@ -1,22 +1,16 @@
 <template>
   <div class="learn">
     <div class="articleListWrapper">
-      <articleList 
-        :articles = 'articles'
-        :path = 'path'>
-        <template slot='mainTitle'>
-          学习专区
-        </template>
+      <articleList :articles="articles" :path="path">
+        <template slot="mainTitle">学习专区</template>
       </articleList>
     </div>
     <div class="learnContent">
       <PageTitle>
-        <template slot='mainPath'>
-          帮助
-        </template>
-        <template slot='path'>学习专区</template>
+        <template slot="mainPath">帮助</template>
+        <template slot="path">学习专区</template>
       </PageTitle>
-      <router-view />
+      <router-view/>
     </div>
   </div>
 </template>
@@ -34,16 +28,18 @@ export default {
   },
   methods: {
     getArticles() {
-      http.postNormal('/frontend/article/finds',{
-        category: 2,
-        per_page: 30
-      }).then((res) => {
-        console.log('获取文章列表')
-        console.log(res)
-        if(res.data.code == 200){
-          this.articles = res.data.data.data
-        }
-      })
+      http
+        .postNormal('/frontend/article/finds', {
+          category: 2,
+          per_page: 30
+        })
+        .then(res => {
+          console.log('获取文章列表')
+          console.log(res)
+          if (res.data.code == 200) {
+            this.articles = res.data.data.data
+          }
+        })
     }
   },
   components: {
@@ -64,6 +60,8 @@ export default {
   flex-direction row
   justify-content flex-start
   align-items stretch
+  padding 20px 0
+  border-radius 6px
   .articleListWrapper
     position relative
     flex 0 0 200px
@@ -71,5 +69,8 @@ export default {
   .learnContent
     flex 1
     $flex-column-start()
-    margin 12px 20px
+    margin-left 20px
+    padding 12px 20px
+    border 1px solid rgba(200, 200, 200, 0.3)
+    overflow-y auto
 </style>

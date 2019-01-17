@@ -1,46 +1,36 @@
 <template>
   <div class="statisticChart">
-    <PageTitle :tips='tips'>
-      <template slot='mainPath'>
-        报表
-      </template>
-      <template slot='path'>
-        统计报表
-      </template>
-      <template slot='mainTitle'>
-        统计报表
-      </template>
+    <PageTitle :tips="tips">
+      <template slot="mainPath">报表</template>
+      <template slot="path">统计报表</template>
+      <template slot="mainTitle">统计报表</template>
     </PageTitle>
 
     <div class="condition">
       <div class="way">
-        <div class="wayItem"
-          v-for='(item, index) in wayList'
-          :key='index'
+        <div
+          class="wayItem"
+          v-for="(item, index) in wayList"
+          :key="index"
           :class="{active: activeIndex == index}"
-          @click='selectWay(index)'>
-          按{{item.name}}显示
-        </div>
+          @click="selectWay(index)"
+        >按{{item.name}}显示</div>
       </div>
       <div class="date">
-        <DatePicker 
-          type="date" 
-          show-week-numbers 
-          placeholder="选择日期" 
+        <DatePicker
+          type="date"
+          show-week-numbers
+          placeholder="选择日期"
           style="width: 200px"
-          @on-change='selectData'>
-        </DatePicker>
+          @on-change="selectData"
+        ></DatePicker>
       </div>
     </div>
 
     <div class="tableWrapper">
       <div class="tableContent">
         <div class="tableInner">
-          <MyTable
-            :column='columns'
-            :url='url'
-            :params='params'>
-          </MyTable>
+          <MyTable :column="columns" :url="url" :params="params"></MyTable>
         </div>
       </div>
     </div>
@@ -50,41 +40,47 @@
 <script>
 import PageTitle from '../pageTitle/pageTitle.vue'
 import MyTable from '../myTable/myTable1.vue'
-import {getNowFormatDate} from '../../static/js/config.js'
+import { getNowFormatDate } from '../../static/js/config.js'
 export default {
-	data() {
+  data() {
     return {
       tips: '消费记录按照每天进行日结,如果没有任何消费则不产生记录',
-      wayList: [
-        {name: '任务'},
-        {name: '公众号'}
-      ],
+      wayList: [{ name: '任务' }, { name: '公众号' }],
       activeIndex: 0,
       columns: [
-          {
-            title: '任务名',
-            key: 'identifier'
-          },
-          {
-            title: '日期',
-            key: 'create_time'
-          },
-          {
-            title: '消费金额（元）',
-            key: 'price'
-          },
-          {
-            title: '粉丝数（个）',
-            key: 'number'
-          },
-          {
-            title: '相关公众号',
-            key: 'account_name'
-          },
-          {
-            title: '单粉成本(元)',
-            key: 'average_price'
+        {
+          title: '任务名',
+          render: (h, params) => {
+            return h('div', [
+              h(
+                'strong',
+                params.row.remark && params.row.remark != ''
+                  ? params.row.remark
+                  : params.row.identifier
+              )
+            ])
           }
+        },
+        {
+          title: '日期',
+          key: 'create_time'
+        },
+        {
+          title: '消费金额（元）',
+          key: 'price'
+        },
+        {
+          title: '粉丝数（个）',
+          key: 'number'
+        },
+        {
+          title: '相关公众号',
+          key: 'account_name'
+        },
+        {
+          title: '单粉成本(元)',
+          key: 'average_price'
+        }
       ],
       url: '/frontend/goods_report_day/finds',
       params: {}
@@ -115,10 +111,10 @@ export default {
   mounted() {
     this._initTime()
   },
-	components: {
+  components: {
     PageTitle,
     MyTable
-	}
+  }
 }
 </script>
 

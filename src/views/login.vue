@@ -1,5 +1,5 @@
 <template>
-  <div class="login" ref='login'>
+  <div class="login" ref="login">
     <div class="content">
       <div class="sliderWrapper">
         <!--<swiper
@@ -12,26 +12,19 @@
           <swiper-slide>I'm Slide 4</swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>-->
-        <img src='../static/image/slide1.jpg'>
+        <img src="../static/image/slide1.jpg">
       </div>
       <!--登录框-->
       <div class="loginWrapper">
-        <div class="loginTitle">
-          登陆公锤
-        </div>
-        <Input 
-          prefix="ios-phone-portrait"  
-          style="marginBottom: 5px" 
-          v-model.trim='userName'
-          placeholder='请输入登陆手机号'/>
-        <Input 
-          prefix="ios-lock"
-          type='password' 
-          v-model.trim='password'
-          placeholder='请输入登陆密码'/>
-        <div class="confirmLogin" @click='login'>
-          登陆
-        </div>
+        <div class="loginTitle">登陆公锤</div>
+        <Input
+          prefix="ios-phone-portrait"
+          style="marginBottom: 5px"
+          v-model.trim="userName"
+          placeholder="请输入登陆手机号"
+        />
+        <Input prefix="ios-lock" type="password" v-model.trim="password" placeholder="请输入登陆密码"/>
+        <div class="confirmLogin" @click="login">登陆</div>
         <div class="accountCtrl">
           <div class="resetPwd" @click="jump('/reset')">忘记密码</div>
           <div class="register" @click="jump('/register')">快速注册</div>
@@ -39,29 +32,25 @@
       </div>
 
       <div class="logoWrapper">
-        <img src="../static/image/logo.png" />
+        <img src="../static/image/logo.png">
       </div>
-
     </div>
     <div class="exhibition">
-      <div 
+      <div
         class="exhibitionItem"
         :class="{reverse: index%2==1}"
-        v-for='(item, index) in exhibition'
-        :key='index'>
-        <div 
-          class="itemWrapper"
-          :class="{reverse: index%2==1}">
+        v-for="(item, index) in exhibition"
+        :key="index"
+      >
+        <div class="itemWrapper" :class="{reverse: index%2==1}">
           <div class="imgWrapper">
-            <img :src='item.img' />
+            <img :src="item.img">
           </div>
           <div class="contentWrapper">
             <div class="mainTitle">{{item.mainTitle}}</div>
             <div class="subTitle">{{item.subTitle}}</div>
             <div class="btnWrapper">
-              <div class="btn" @click='toTop'>
-                立即体验
-              </div>
+              <div class="btn" @click="toTop">立即体验</div>
             </div>
           </div>
         </div>
@@ -93,7 +82,7 @@ export default {
         {
           img: require('../static/image/exh1.jpg'),
           mainTitle: '实时出价,实时进粉，一个粉丝也可成交',
-          subTitle:'1分钟设置完成，实时投放市场，精准引流'
+          subTitle: '1分钟设置完成，实时投放市场，精准引流'
         },
         {
           img: require('../static/image/exh2.jpg'),
@@ -111,35 +100,34 @@ export default {
   },
   methods: {
     jump(path) {
-      this.$router.push({path})
+      this.$router.push({ path })
     },
     login() {
-      http.postNormal('/frontend/user/login',{
-        phone: this.userName,
-        password: this.password
-      })
-      .then((res) => {
-        console.log('登陆成功，获取session')
-        console.log(res)
-         /**登陆成功后**//
-        Cookies.set('access', '1')
-        Cookies.set('session', res.data.data.session_id)
-        this.$Message.success('登陆成功')
-        let path = decodeURIComponent(window.location.hash).split('=')[1] //获取重定向的path
-        if(!path){
-          path = '/index'
-        }
-        this.$router.push({path})
-      })
-      .catch((res) => {
-        console.log(res)
-      })
+      http
+        .postNormal('/frontend/user/login', {
+          phone: this.userName,
+          password: this.password
+        })
+        .then(res => {
+          console.log('登陆成功，获取session')
+          console.log(res) / /**登陆成功后**/ Cookies.set('access', '1')
+          Cookies.set('session', res.data.data.session_id)
+          this.$Message.success('登陆成功')
+          let path = decodeURIComponent(window.location.hash).split('=')[1] //获取重定向的path
+          if (!path) {
+            path = '/index'
+          }
+          this.$router.push({ path })
+        })
+        .catch(res => {
+          console.log(res)
+        })
     },
     toTop() {
       this.delay = setTimeout(() => {
         document.getElementById('app').scrollBy(0, -100)
         this.toTop()
-        if(document.getElementById('app').scrollTop<=0) {
+        if (document.getElementById('app').scrollTop <= 0) {
           clearTimeout(this.delay)
         }
       }, 10)
@@ -149,14 +137,13 @@ export default {
     swiper,
     swiperSlide
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
-    
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+      this.$router.push({ name: 'mobileTips' })
+    }
   },
-  watch: {
-
-  }
+  watch: {}
 }
 </script>
 
@@ -201,8 +188,7 @@ export default {
       .accountCtrl
         $flex-row-space()
         margin-top 25px
-        .resetPwd,
-        .register
+        .resetPwd, .register
           font-size $font-size-small
           cursor pointer
         .resetPwd
@@ -210,12 +196,12 @@ export default {
         .register
           color $theme-color
     .logoWrapper
-      position absolute 
+      position absolute
       top 12%
       left 120px
       width 140px
       height 30px
-      img 
+      img
         width 100%
         height 100%
   .exhibition
@@ -243,7 +229,7 @@ export default {
           margin 0 60px
           display flex
           flex-direction column
-          align-items stretch 
+          align-items stretch
           justify-content center
           .mainTitle
             font-size $font-size-large
@@ -255,7 +241,7 @@ export default {
             color $color-dark
           .btnWrapper
             margin-top 20px
-            .btn 
+            .btn
               $flex-common-center()
               width 100px
               height 30px

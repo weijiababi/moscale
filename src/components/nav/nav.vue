@@ -1,56 +1,54 @@
 <template>
   <div class="nav">
-		<div class="logoWrapper">
-      <img src='../../static/image/logo.png' />
+    <div class="logoWrapper">
+      <img src="../../static/image/logo.png">
     </div>
     <div class="topNav">
       <div class="navList">
-        <div class="navItem"
-          v-for='(item, index) in navList'
-          :key='index'
+        <div
+          class="navItem"
+          v-for="(item, index) in navList"
+          :key="index"
           :class="{active: index === activeIndex}"
-          @click='jump(item.path, index)'>
-          {{item.name}}
-        </div>
+          @click="jump(item.path, index)"
+        >{{item.name}}</div>
       </div>
     </div>
 
-    <div class="user" v-if='user.user'>
+    <div class="user" v-if="user.user">
       <div class="userName">
-        <Dropdown placement="bottom-start" @on-click='clickMenu'>
-          <a href="javascript:void(0)"
-             :style="{color: '#fff'}">
+        <Dropdown placement="bottom-start" @on-click="clickMenu">
+          <a href="javascript:void(0)" :style="{color: '#fff'}">
             {{user.user.phone}}
             <Icon type="ios-arrow-down"></Icon>
           </a>
           <DropdownMenu slot="list">
-            <!--<DropdownItem name='userInfo'>个人信息</DropdownItem>-->
-            <DropdownItem name='logout'>退出</DropdownItem>
+            <DropdownItem name="logout">退出</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
       <Badge>
-        <Avatar :src='logo' />
+        <Avatar :src="logo"/>
       </Badge>
       <div class="login"></div>
     </div>
-	</div>
+  </div>
 </template>
 
 <script>
 import eventBus from '../../bus.js'
 import Cookies from 'js-cookie'
 import http from '../../static/js/http.js'
-import {mapGetters, mapMutations} from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   data() {
     return {
       navList: [
-        {name: '首页', path: '/index'},
-        {name: '推广', path: '/extend/addProject'},
-        {name: '报表', path: '/chart/currentChart'},
-        {name: '账户', path: '/account/recharge'},
-        {name: '帮助', path: '/help/learn'}
+        { name: '首页', path: '/index' },
+        { name: '计划', path: '/extend/addProject' },
+        { name: '报表', path: '/chart/currentChart' },
+        { name: '账户', path: '/account/recharge' },
+        { name: '帮助', path: '/help/learn' }
       ],
       activeIndex: 0,
       logo: require('../../static/image/logo.jpg')
@@ -63,26 +61,25 @@ export default {
       // })
       eventBus.$emit('changeActive', path)
       this.activeIndex = index
-      this.$router.push({path: path})
+      this.$router.push({ path: path })
     },
     clickMenu(name) {
-      switch(name) {
+      switch (name) {
         case 'userInfo':
           console.log(name)
-          break;
+          break
         case 'logout':
-          http.postLoading('/frontend/user/logout')
-          .then((res) => {
+          http.postLoading('/frontend/user/logout').then(res => {
             console.log(res)
-            if(res.data.code == 200) {
+            if (res.data.code == 200) {
               this.$Message.info('退出成功')
             }
           })
-          
+
           Cookies.remove('access')
           Cookies.remove('session')
           this.setUser({})
-          this.$router.push({path: '/login'})
+          this.$router.push({ path: '/login' })
       }
     },
     ...mapMutations({
@@ -90,14 +87,12 @@ export default {
     })
   },
   created() {
-    eventBus.$on('changeNav', (val) => {
+    eventBus.$on('changeNav', val => {
       this.activeIndex = val
     })
   },
   computed: {
-    ...mapGetters([
-      'user'
-    ])
+    ...mapGetters(['user'])
   },
   beforeDestory() {
     eventBus.$off('changeNav')
@@ -108,7 +103,7 @@ export default {
 <style scoped lang="stylus">
 @import '../../static/style/index.styl'
 .nav
-  flex 0 0 48px 
+  flex 0 0 48px
   width 100%
   height 48px
   $flex-row-start()
@@ -124,18 +119,18 @@ export default {
     flex 1
     .navList
       $flex-row-start()
-      .navItem 
+      .navItem
         margin-right 36px
         padding 12px
         font-size $font-size-medium
         font-weight 500
-        color rgba(240,240,240,.8)
+        color rgba(240, 240, 240, 0.8)
         cursor pointer
         &.navItem:last-child
           margin-right 0
         &.active
           color #fff
-  .user 
+  .user
     flex 0 0 250px
     width 250px
     $flex-row-center()

@@ -21,7 +21,7 @@ const router = new Router({
         {
           path: '/extend',
           component: () => import('./components/extend/extend.vue'),
-          meta: {requireAuth: true},
+          meta: { requireAuth: true },
           children: [
             {
               path: '',
@@ -31,32 +31,38 @@ const router = new Router({
               path: 'addProject',
               name: 'addProject',
               component: () => import('./components/extend/addProject.vue'),
-              meta: {requireAuth: true}
+              meta: { requireAuth: true }
             },
             {
               path: 'allProject',
               name: 'allProject',
               component: () => import('./components/extend/allProject.vue'),
-              meta: {requireAuth: true}
+              meta: { requireAuth: true }
             },
             {
               path: 'officeAccount',
               name: 'officeAccount',
               component: () => import('./components/extend/officeAccount.vue'),
-              meta: {requireAuth: true}
+              meta: { requireAuth: true }
+            },
+            {
+              path: 'operator',
+              name: 'operator',
+              component: () => import('./components/extend/operator.vue'),
+              meta: { requireAuth: true }
             },
             {
               path: 'myBid',
               name: 'myBid',
               component: () => import('./components/extend/myBid.vue'),
-              meta: {requireAuth: true}
-            },
+              meta: { requireAuth: true }
+            }
           ]
         },
         {
           path: '/chart',
           component: () => import('./components/chart/chart.vue'),
-          meta: {requireAuth: true},
+          meta: { requireAuth: true },
           children: [
             {
               path: '',
@@ -66,20 +72,20 @@ const router = new Router({
               path: 'currentChart',
               name: 'currentChart',
               component: () => import('./components/chart/currentChart.vue'),
-              meta: {requireAuth: true}
+              meta: { requireAuth: true }
             },
             {
               path: 'statisticChart',
               name: 'statisticChart',
               component: () => import('./components/chart/statisticChart.vue'),
-              meta: {requireAuth: true}
+              meta: { requireAuth: true }
             }
           ]
         },
         {
           path: '/account',
           component: () => import('./components/account/account.vue'),
-          meta: {requireAuth: true},
+          meta: { requireAuth: true },
           children: [
             {
               path: '',
@@ -89,25 +95,26 @@ const router = new Router({
               path: 'recharge',
               name: 'recharge',
               component: () => import('./components/account/recharge.vue'),
-              meta: {requireAuth: true}
+              meta: { requireAuth: true }
             },
             {
               path: 'rechargeRecord',
               name: 'rechargeRecord',
-              component: () => import('./components/account/rechargeRecord.vue'),
-              meta: {requireAuth: true}
+              component: () =>
+                import('./components/account/rechargeRecord.vue'),
+              meta: { requireAuth: true }
             },
             {
               path: 'consumeRecord',
               name: 'consumeRecord',
               component: () => import('./components/account/consumeRecord.vue'),
-              meta: {requireAuth: true}
+              meta: { requireAuth: true }
             },
             {
               path: 'protocol',
               name: 'protocol',
               component: () => import('./components/account/protocol.vue'),
-              meta: {requireAuth: true}
+              meta: { requireAuth: true }
             }
           ]
         },
@@ -151,53 +158,115 @@ const router = new Router({
       component: () => import('./views/index.vue')
     },
     {
-      path:'/login',
+      path: '/login',
       name: 'login',
       component: () => import('./views/login.vue')
     },
     {
-      path:'/register',
+      path: '/newLogin',
+      name: 'newLogin',
+      component: () => import('./views/newLogin.vue')
+    },
+    {
+      path: '/register',
       name: 'register',
       component: () => import('./views/register.vue')
+    },
+    {
+      path: '/mobileRegister',
+      name: 'mobileRegister',
+      component: () => import('./views/H5/mobileRegister.vue')
     },
     {
       path: '/reset',
       name: 'reset',
       component: () => import('./views/reset.vue')
+    },
+    {
+      path: '/success',
+      name: 'success',
+      component: () => import('./views/H5/success.vue')
+    },
+    {
+      path: '/mobileTips',
+      name: 'mobileTips',
+      component: () => import('./views/H5/mobileTips.vue')
+    },
+    {
+      path: '/introduce',
+      name: 'introduce',
+      component: () => import('./views/H5/introduce.vue')
+    },
+    {
+      path: '/distribution',
+      name: 'distribution',
+      component: () => import('./views/H5/distribution.vue')
+    },
+    {
+      path: '/partner',
+      name: 'partner',
+      component: () => import('./views/H5/partner.vue')
+    },
+    {
+      path: '/forward',
+      name: 'forward',
+      component: () => import('./views/H5/forward.vue')
+    },
+    {
+      path: '/tips',
+      component: () => import('./components/tips/tips.vue'),
+      children: [
+        {
+          path: 'authSuccess',
+          name: 'authSuccess',
+          component: () => import('./components/tips/success.vue')
+        },
+        {
+          path: 'failNotAuth',
+          name: 'failNotAuth',
+          component: () => import('./components/tips/failNotAuth.vue')
+        },
+        {
+          path: 'failNotEmp',
+          name: 'failNotEmp',
+          component: () => import('./components/tips/failNotEmp.vue')
+        }
+      ]
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
-  if(to.meta.requireAuth) {
-    if(Cookies.get('access') == 1) {
+  if (to.meta.requireAuth) {
+    if (Cookies.get('access') == 1) {
       next()
-    }else{
+    } else {
       iView.Modal.warning({
         title: '提示',
         content: '请登陆后重试',
         onOk: () => {
           next({
             path: '/login',
-            query: {redirect: to.fullPath}
+            query: { redirect: to.fullPath }
           })
         }
       })
     }
-  }else if(to.name=='homepage' && Cookies.get('access') != 1){ //避免点击首页进行登陆仍弹出弹窗
+  } else if (to.name == 'homepage' && Cookies.get('access') != 1) {
+    //避免点击首页进行登陆仍弹出弹窗
     next({
       path: '/login',
-      query: {redirect: to.fullPath}
+      query: { redirect: to.fullPath }
     })
-  }else {
+  } else {
     next()
   }
 })
 
-router.afterEach((to) => {
+router.afterEach(to => {
   iView.LoadingBar.finish()
-  window.scrollTo(0,0)
+  window.scrollTo(0, 0)
 })
 
 export default router

@@ -26,12 +26,10 @@
 
 <script>
 // @ is an alias to /src
-import Vue from 'vue'
 import Nav from '../components/nav/nav.vue'
 import Slide from '../components/slide/slide.vue'
 import {mapGetters, mapMutations} from 'vuex'
 import http from '../static/js/http.js'
-import Cookies from 'js-cookie'
 export default {
   name: 'home',
   data() {
@@ -54,7 +52,7 @@ export default {
     })
   },
   created() {
-    console.log('配置文件的全局数据')
+    console.log('配置文件中的全局数据')
     console.log(this.$global)
     this.getUser()
   },

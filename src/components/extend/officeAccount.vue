@@ -1,32 +1,21 @@
 <template>
   <div class="officeAccount">
     <PageTitle>
-      <template slot='mainPath'>
-        推广
-      </template>
-      <template slot='path'>
-        公众号
-      </template>
-      <template slot='mainTitle'>
-        公众号
-      </template>
+      <template slot="mainPath">计划</template>
+      <template slot="path">公众号</template>
+      <template slot="mainTitle">公众号</template>
     </PageTitle>
 
     <div class="addAccount">
-      <div class="addBtn" @click='addAccount'>
-        <Icon type="md-add" />
-        新增公众号
+      <div class="addBtn" @click="addAccount">
+        <Icon type="md-add"/>新增公众号
       </div>
     </div>
 
     <div class="tableWrapper">
       <div class="tableConte">
         <div class="tableInner">
-          <MyTable
-            :column='column'
-            :url='url'
-            :params='param'>
-          </MyTable>
+          <MyTable :column="column" :url="url" :params="param" :pageSize="10000"></MyTable>
         </div>
       </div>
     </div>
@@ -36,8 +25,8 @@
 <script>
 import PageTitle from '../pageTitle/pageTitle.vue'
 import http from '../../static/js/http.js'
-import MyTable from '../myTable/myTable.vue'
-import {mapGetters} from 'vuex'
+import MyTable from '../myTable/myTable1.vue'
+import { mapGetters } from 'vuex'
 import Cookies from 'js-cookie'
 export default {
   data() {
@@ -55,31 +44,32 @@ export default {
           title: '类型',
           key: 'type',
           render: (h, params) => {
-            if(params.row.type == 0) {
+            if (params.row.type == 0) {
               return h('span', '订阅号')
-            }else if(params.row.type == 1) {
+            } else if (params.row.type == 1) {
               return h('span', '服务号')
             }
           }
         }
       ],
       url: '/frontend/official_account/finds',
-      param: {type: 1},
+      param: { type: 1 }
     }
   },
   methods: {
     addAccount() {
-      window.location.href = this.$global.baseURL + '/frontend/official_account/create?user_id=' + this.user.user_id + '&session_id=' + Cookies.get('session')
+      window.location.href =
+        this.$global.baseURL +
+        '/frontend/official_account/create?user_id=' +
+        this.user.user_id +
+        '&session_id=' +
+        Cookies.get('session')
     }
   },
   computed: {
-    ...mapGetters([
-      'user'
-    ])
+    ...mapGetters(['user'])
   },
-  mounted() {
-
-  },
+  mounted() {},
   components: {
     PageTitle,
     MyTable

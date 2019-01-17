@@ -1,26 +1,17 @@
 <template>
   <div class="rechargeRecord">
     <PageTitle :tips="tips">
-      <template slot='mainPath'>
-        账户
-      </template>
-      <template slot='path'>
-        充值记录
-      </template>
-      <template slot='mainTitle'>
-        充值记录
-      </template>
+      <template slot="mainPath">账户</template>
+      <template slot="path">充值记录</template>
+      <template slot="mainTitle">充值记录</template>
     </PageTitle>
-    <div class="balance" v-if='user.balance'>
-      账户余额: <p class="money">{{user.balance}}</p> 元
+    <div class="balance" v-if="user.balance">账户余额:
+      <p class="money">{{user.balance}}</p>元
     </div>
     <div class="recordTable">
       <div class="tableWrapper">
         <div class="tableContent">
-          <MyTable
-            :column='columns'
-            :url='url'>
-          </MyTable>
+          <MyTable :column="columns" :url="url"></MyTable>
         </div>
       </div>
     </div>
@@ -31,7 +22,7 @@
 import PageTitle from '../pageTitle/pageTitle.vue'
 import http from '../../static/js/http.js'
 import Cookies from 'js-cookie'
-import {mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import MyTable from '../myTable/myTable1.vue'
 
 export default {
@@ -39,31 +30,42 @@ export default {
     return {
       tips: '如使用网银打款，到账时间将延迟',
       columns: [
-        {title: '日期', key: 'create_time'},
-        {title: '金额(元)', key: 'recharge_price'},
-        {title: '状态', key: 'status',render:(h,params) => {
-          if(params.row.status == 1) {
-            return h('div','未支付')
-          }else if(params.row.status == 2) {
-            return h('div','已支付')
+        { title: '日期', key: 'create_time' },
+        { title: '金额(元)', key: 'recharge_price' },
+        {
+          title: '状态',
+          key: 'status',
+          render: (h, params) => {
+            if (params.row.status == 1) {
+              return h('div', '未支付')
+            } else if (params.row.status == 2) {
+              return h('div', '已支付')
+            }
           }
-        }}
+        },
+        {
+          title: '备注',
+          key: 'remark',
+          render: (h, params) => {
+            if (!params.row.remark) {
+              return h('div', '暂无内容')
+            } else {
+              return h('div', params.row.remark)
+            }
+          }
+        }
       ],
-      url: '/frontend/recharge_record/finds',
+      url: '/frontend/recharge_record/finds'
     }
   },
-  methods: {
-  },
-  mounted() {
-  },
+  methods: {},
+  mounted() {},
   components: {
     PageTitle,
     MyTable
   },
   computed: {
-    ...mapGetters([
-      'user'
-    ])
+    ...mapGetters(['user'])
   }
 }
 </script>
@@ -79,7 +81,7 @@ export default {
     margin-top 20px
     font-size $font-size-medium
     color $color-dark
-    .money 
+    .money
       margin 0 4px 0 6px
       color $theme-color
   .recordTable
